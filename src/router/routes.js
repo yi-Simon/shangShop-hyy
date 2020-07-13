@@ -4,22 +4,26 @@ import Register from '@/pages/Register'
 import Search from '@/pages/Search'
 
 
-export default {
-    routes: [{
-            path: '/home',
-            component: Home
-        },
-        {
-            path: '/login',
-            component: Login
-        },
-        {
-            path: '/register',
-            component: Register
-        },
-        {
-            path: '/search/:keyword?', //params可选
-            component: Search
-        },
-    ]
-}
+export default [{
+        path: '/home',
+        component: Home
+    },
+    {
+        path: '/login',
+        component: Login
+    },
+    {
+        path: '/register',
+        component: Register
+    },
+    {
+        path: '/search/:keyword?',
+        component: Search,
+        name: 'search',
+        props: route => ({ keyword: route.params.keyword, keyword1: route.query.keyword1 })
+    },
+    {
+        path: '/',
+        redirect: '/home'
+    }
+]

@@ -1,12 +1,14 @@
 <template>
   <div>Search <br>
-  params:{{$route.params.keyword}}-----query:{{$route.query.keyword}}
+  params:{{keyword}}-----query:{{keyword1}}
+
   </div>
 </template>
 
 <script>
 export default {
   name: 'Search',
+  props:['keyword','keyword1']
 }
 </script>
 
