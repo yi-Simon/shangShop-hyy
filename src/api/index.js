@@ -32,8 +32,19 @@ export const reqGoodsDetailInfo = (skuId) => Ajax.get(`/item/${ skuId }`)
 
 export const reqAddOrUpdateShopCart = (skuId, skuNum) => Ajax.post(`/cart/addToCart/${ skuId }/${ skuNum }`)
 
+//请求购物车列表数据  /api/cart/cartList  get
+
 export const reqShopCartList = () => Ajax.get('/cart/cartList')
 
+//请求修改购物车选中状态 /api/cart/checkCart/{skuID}/{isChecked}  get
 export const reqUpdateIsChecked = (skuID, isChecked) => Ajax.get(`/cart/checkCart/${skuID}/${isChecked}`)
 
 export const reqDeleteCart = skuId => Ajax.delete(`/cart/deleteCart/${skuId}`)
+
+export const reqRegister = userInfo => Ajax.post('/user/passport/register', userInfo)
+
+export const reqLogin = userInfo => Ajax.post('/user/passport/login', userInfo)
+
+export const reqLogout = () => Ajax.get('/user/passport/logout')
+
+export const reqTrade = () => Ajax.get('/order/auth/trade')

@@ -62,6 +62,10 @@
         mask.style.left = maskX + 'px'
         mask.style.top = maskY + 'px'
 
+
+
+        
+
         //设置大图的移动位置，mask移动相反的两倍
         bigImg.style.left = -2 *maskX + 'px'
         bigImg.style.top = -2 *maskY + 'px'

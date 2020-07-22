@@ -6,7 +6,12 @@
       <div class="container">
         <div class="loginList">
           <p>尚品汇欢迎您！</p>
-          <p>
+          <p v-if="userInfo.name">
+            <!-- <router-link to="/login"></router-link> -->
+            <a href="javascript:;">{{userInfo.name}}</a>
+            <a href="javascript:;" class="register" @click="logout">退出登录</a>
+          </p>
+          <p v-else>
             <span>请</span>
             <router-link to="/login">登录</router-link>
             <!-- <a href="###">登录</a> -->
@@ -44,6 +49,7 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
 export default {
   name: "Header",
   data() {
@@ -103,8 +109,16 @@ export default {
     },
     clearKeyword() {
       this.keyword = "";
+    },
+    async logout(){
+      const result = await this.$store.dispatch('getLogout')
     }
-  }
+  },
+  computed:{
+      ...mapState({
+        userInfo:state=>state.user.userInfo
+      })
+    }
 };
 </script>
 

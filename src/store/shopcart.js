@@ -29,27 +29,43 @@ const actions = {
     async updateIsChecked({ commit }, { skuId, isChecked }) {
         const result = await reqUpdateIsChecked(skuId, isChecked)
         if (result.code === 200) {
-            return '修改选中状态'
+            return '修改选中状态成功'
         } else {
-            return Promise.reject(new Error('修改失败'))
+            return Promise.reject(new Error('修改选中状态失败'))
         }
     },
+
     updateAllIsChecked({ commit, state, dispatch }, isChecked) {
+        //定义数组存储每一项去发请求返回的promise对象
         let promises = []
         state.shopCartList.forEach(item => {
             if (item.isChecked === isChecked) return
-            let promse = dispatch('updateIsChecked', { skuId: item.skuId, isChecked: isChecked })
-            promises.push(promse)
+            let promise = dispatch('updateIsChecked', { skuId: item.skuId, isChecked: isChecked })
+            promises.push(promise)
         })
+
+        //Promise.all 传递的参数必须是一个promise对象的数组，返回值也是一个promise 
+        //返回的promise对象的成功和失败  看数组内部所有的promise对象是否成功，如果都成功，那么它就成功，如果有一个失败，那它就失败
+        //成功的返回值promise的数据是一个数组 【每个成功的promise的数据】
         return Promise.all(promises)
     },
-    async reqDeleteCart({ commit }, skuId) {
+
+    async deleteCart({ commit }, skuId) {
         const result = await reqDeleteCart(skuId)
         if (result.code === 200) {
-            return '删除成功'
+            alert('删除成功')
         } else {
             return Promise.reject(new Error('删除失败'))
         }
+    },
+    async deleteChechckedCart({ commit, dispatch, state }) {
+        let promises = []
+        state.shopCartList.forEach(item => {
+            if (!item.isChecked) return
+            let promise = dispatch('deleteCart', item.skuId)
+            promises.push(promise)
+        })
+        return Promise.all(promises)
     }
 }
 
