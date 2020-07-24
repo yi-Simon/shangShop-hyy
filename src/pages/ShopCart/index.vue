@@ -32,7 +32,7 @@
             <span class="sum">{{cart.skuNum * cart.skuPrice}}</span>
           </li>
           <li class="cart-list-con7">
-            <a href="#none" class="sindelet" @click="deleteCart(cart.skuId)">删除</a>
+            <a href="javascript:;" class="sindelet" @click="deleteCart(cart)">删除</a>
             <br>
             <a href="#none">移到收藏</a>
           </li>
@@ -45,7 +45,7 @@
         <span>全选</span>
       </div>
       <div class="option">
-        <a href="#none" @click="deleteChecked">删除选中的商品</a>
+        <a href="javascript:;" @click="deleteChecked">删除选中的商品</a>
         <a href="#none">移到我的关注</a>
         <a href="#none">清除下柜商品</a>
       </div>
@@ -57,7 +57,8 @@
           <i class="summoney">{{allMoney}}</i>
         </div>
         <div class="sumbtn">
-          <router-link to="/trade">结算</router-link>
+          <router-link to="/trade" class="sum-btn">结算</router-link>
+          <!-- <a class="sum-btn" href="###" target="_blank">结算</a> -->
         </div>
       </div>
     </div>
@@ -100,22 +101,26 @@ import { mapState } from 'vuex'
           alert(error.message)
         }
       },
-      async deleteCart(skuId){
+
+      //删除单个的购物车商品
+      async deleteCart(cart){
         try {
-          await this.$store.dispatch('deleteCart',skuId)
+          await this.$store.dispatch('deleteShopCart',cart.skuId)
           this.getShopCartList()
         } catch (error) {
           alert(error.message)
         }
       },
+
+      //删除选中的多个购物车商品
       async deleteChecked(){
-          try {
-            await this.$store.dispatch('deleteChechckedCart')
-            this.getShopCartList()
-          } catch (error) {
-            alert(error.message)
-          }
-      }, 
+        try {
+          await this.$store.dispatch('deleteCheckedShopCart')
+          this.getShopCartList()
+        } catch (error) {
+          alert(error.message)
+        }
+      }
     },
     computed:{
       ...mapState({
@@ -141,12 +146,13 @@ import { mapState } from 'vuex'
       },
       isAllChecked:{
         get(){
-          return this.shopCartList.every((item,index) => item.isChecked === 1)
+          return this.shopCartList.every((item,index) => item.isChecked === 1) &&  this.shopCartList.length > 0
         },
         async set(val){
           //点击全选之后，会进入这个set逻辑
           try {
             const result = await this.$store.dispatch('updateAllIsChecked',val?1:0)
+            console.log(result)
             this.getShopCartList()
           } catch (error) {
             alert(error.message)

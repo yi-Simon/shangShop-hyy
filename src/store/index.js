@@ -5,7 +5,6 @@ import search from './search'
 import detail from './detail'
 import shopcart from './shopcart'
 import user from './user'
-import trade from './trade'
 Vue.use(Vuex)
 
 
@@ -21,16 +20,15 @@ const getters = {}
 
 
 export default new Vuex.Store({
-    state,
-    mutations,
-    actions,
-    getters,
-    modules: {
-        home,
-        search,
-        detail,
-        shopcart,
-        user,
-        trade
-    }
+  state,
+  mutations,
+  actions,
+  getters,
+  modules:{
+    home,
+    search,
+    detail,
+    shopcart,
+    user
+  }
 })

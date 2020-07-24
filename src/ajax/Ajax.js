@@ -22,11 +22,18 @@ service.interceptors.request.use(config => {
   //开启我们的进度条
   NProgress.start()
 
-  //在请求头当中添加用户的临时id，让每个ajax请求都带着这个userTempId
+  //在请求头当中添加用户的临时id，让每个ajax请求都带着这个userTempId（购物车）
   let userTempId = store.state.user.userTempId
   if(userTempId){
     config.headers.userTempId = userTempId
   }
+
+  //添加用户登录过后的token信息，让每个ajax请求都带这个token，为了找到用户登录后相关信息（订单、购物车）
+  let token = store.state.user.userInfo.token
+  if(token){
+    config.headers.token = token
+  }
+
 
   return config
 });

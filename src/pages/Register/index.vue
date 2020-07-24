@@ -3,7 +3,8 @@
     <!-- 注册内容 -->
     <div class="register">
       <h3>注册新用户
-        <span class="go">我有账号，去<router-link to="/login">登陆</router-link>
+        <span class="go">我有账号，去 
+          <router-link to="/login">登陆</router-link>
         </span>
       </h3>
       <div class="content">
@@ -14,7 +15,10 @@
       <div class="content">
         <label>验证码:</label>
         <input type="text" placeholder="请输入验证码" v-model="code">
-        <img ref="code" src="/api/user/passport/code" alt="code">
+        <!-- 这两种都是ok的，上面的使用的是img图片的src特殊性，发送的普通请求  不跨域 -->
+        <!-- 下面我们使用的是代理服务器转发的，我们认为是跨域的 -->
+        <!-- <img ref="code" src="http://182.92.128.115/api/user/passport/code" alt="code" @click="changeCode"> -->
+        <img ref="code" src="/api/user/passport/code" alt="code" @click="changeCode">
         <span class="error-msg">错误提示信息</span>
       </div>
       <div class="content">
@@ -33,7 +37,7 @@
         <span class="error-msg">错误提示信息</span>
       </div>
       <div class="btn">
-        <button @click="completeRegister">完成注册</button>
+        <button @click="register">完成注册</button>
       </div>
     </div>
 
@@ -60,29 +64,29 @@
   export default {
     name: 'Register',
     data(){
-      return{
+      return {
         mobile:'',
         password:'',
+        code:'',
         password2:'',
-        code:''
       }
     },
     methods:{
-      async completeRegister(){
-        let {mobile,password,password2,code} = this
-        if(mobile&&password&&password2&&code&&password2===password){
+      async register(){
+        let {mobile,password,code,password2} = this
+        if(mobile&&password&&code&&password2&&password === password2){
           let userInfo = {mobile,password,code}
           try {
-            const result = await this.$store.dispatch('register',userInfo)
-            if(result){
-              this.$router.push('/login')
-            }
+            await this.$store.dispatch('userRegister',userInfo)
+            alert('注册成功，自动跳转登录页面')
+            this.$router.push('/login')
           } catch (error) {
             alert(error.message)
           }
-          console.log(1)
         }
-        
+      },
+      changeCode(){
+        this.$refs.code.src = '/api/user/passport/code'
       }
     }
   }
